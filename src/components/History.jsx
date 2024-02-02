@@ -1,9 +1,7 @@
-import PropTypes from 'prop-types';
+import { ResultType } from '../types';
 import './History.css';
 
-const History = (props) => {
-  const entry = props.entry;
-
+const History = ({ entry }) => {
   return (
     <li className="History">
       <h3>{ entry.location }</h3>
@@ -14,11 +12,7 @@ const History = (props) => {
 };
 
 History.propTypes = {
-  entry: PropTypes.shape({
-    location: PropTypes.string.isRequired,
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
-  }).isRequired,
+  entry: ResultType.isRequired,
 };
 
 export default History;
