@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import './SearchError.css';
 
-const SearchError = (props) => {
-  const error = props.error;
-
+const SearchError = ({ error }) => {
   if (!error) {
     return null;
   }

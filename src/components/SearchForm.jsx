@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import './SearchForm.css';
 
 const DEFAULT_STATE = {
-    location: '',
-  };
+  location: '',
+};
   
-const SearchForm = (props) => {
+const SearchForm = ({ onLocationSubmit }) => {
   const [formValues, setFormValues] = useState(DEFAULT_STATE);
 
   const textInput = (e) => {
@@ -19,7 +19,7 @@ const SearchForm = (props) => {
 
   const formSubmitted = (event) => {
     event.preventDefault();
-    props.onLocationSubmit(formValues.location);
+    onLocationSubmit(formValues.location);
   };
 
   return (

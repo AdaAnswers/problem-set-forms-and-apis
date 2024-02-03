@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types';
 import History from './History';
+import { ResultType } from '../types';
 import './HistoryList.css';
 
-const HistoryList = (props) => {
-  const entries = props.entries;
-
+const HistoryList = ({ entries }) => {
   return (
     <div className="HistoryList">
       <h2>Search History</h2>
@@ -21,11 +20,7 @@ const HistoryList = (props) => {
 };
 
 HistoryList.propTypes = {
-  entries: PropTypes.arrayOf(PropTypes.shape({
-    location: PropTypes.string.isRequired,
-    latitude: PropTypes.number.isRequired,
-    longitude: PropTypes.number.isRequired,
-  })).isRequired,
+  entries: PropTypes.arrayOf(ResultType).isRequired,
 };
 
 export default HistoryList;
