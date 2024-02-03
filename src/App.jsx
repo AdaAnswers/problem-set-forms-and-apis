@@ -2,6 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import SearchForm from './components/SearchForm';
 import SearchResult from './components/SearchResult';
+import SearchError from './components/SearchError';
 import './App.css';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
@@ -10,8 +11,12 @@ const SEARCH_URL = 'search.php';
 
 function App() {
   const [result, setResult] = useState(null);
+  const [error, setError] = useState("");
+
+  const clearError = () => { setError(""); };
 
   const performSearchAsync = (location) => {
+    clearError();
     return axios.get(
       `${BASE_URL}${SEARCH_URL}`, { params:
         {
@@ -26,6 +31,10 @@ function App() {
         latitude: Number(lat),
         longitude: Number(lon),
       });
+    })
+    .catch(error => {
+      const message = error.response.data.error;
+      setError(message);
     });
   };
 
@@ -41,6 +50,7 @@ function App() {
       </header>
       <main>
         <SearchResult result={result} />
+        <SearchError error={error} />
       </main>
     </div>
   );
