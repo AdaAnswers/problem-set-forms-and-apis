@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import LocationIQ from './api/LocationIQ';
 import SearchForm from './components/SearchForm';
 import SearchResult from './components/SearchResult';
 import SearchError from './components/SearchError';
@@ -8,7 +8,6 @@ import './App.css';
 
 const API_KEY = import.meta.env.VITE_API_KEY;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const SEARCH_URL = 'search.php';
 
 function App() {
   const [results, setResults] = useState([]);
@@ -24,26 +23,24 @@ function App() {
 
   const performSearchAsync = (location) => {
     clearError();
-    return axios.get(
-      `${BASE_URL}${SEARCH_URL}`, { params:
-        {
-          key: API_KEY,
-          q: location,
-          format: 'json',
-        }})
-    .then(response => {
-      const { lat, lon } = response.data[0];
-      addResult({ 
-        location,
-        latitude: Number(lat),
-        longitude: Number(lon),
-      });
-    })
-    .catch(error => {
-      const message = error.response.data.error;
-      setError(message);
-    });
+    const api = new LocationIQ(API_KEY, BASE_URL);
+
+    return api.getLatLonAsync(location)
+      .then(result => addResult(result))
+      .catch(error => setError(error.message));
   };
+
+  // same method in async/await style
+  // const performSearchAsync = async (location) => {
+  //   clearError();
+  //   const api = new LocationIQ(API_KEY);
+  //   try {
+  //     const result = await api.getLatLonAsync(location);
+  //     addResult(result);
+  //   } catch (error) {
+  //     setError(error.message);
+  //   }
+  // };
 
   const locationSubmitted = (location) => {
     performSearchAsync(location);
